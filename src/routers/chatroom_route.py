@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from chat.src.inventory_api.repository import db_message
 from helpers.database import get_db
-from schemas.plant_schema import PlantBase, PlantDisplay
+from chat.src.schemas.message_schema import PlantBase, PlantDisplay
 
 from repository import db_user
 

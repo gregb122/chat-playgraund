@@ -8,11 +8,5 @@ RUN pip3 install --no-cache-dir -r /requirements.txt
 RUN mkdir -p /src
 COPY ./src/ /src
 
-COPY ./src/run.sh /run.sh
-RUN chmod a+rwx /run.sh
-RUN chmod -R a+rwx /src
-
-ENV PORT=80
-EXPOSE $PORT
 WORKDIR /src
-ENTRYPOINT ["/run.sh"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload", "--ws", "'auto'", "--loop", "'auto'", "--workers 4"]

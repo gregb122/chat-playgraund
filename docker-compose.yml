@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    depends_on:
+      - redis
+    expose:
+      - "8000"
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./src:/src
+    restart: unless-stopped
+
+  db:
+    container_name: chat_postgres_container
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_DB: postgres_db
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: secret
+      PGDATA: /var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  redis:
+    container_name: chat_redis_container
+    image: redis/redis-stack:latest
+    restart: always
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - 6379:6379
+    volumes:
+      - ./config/redis.conf:/redis.conf
+      - redis-data:/var/lib/redis-stack/data
+    command: [ "redis-server", "/redis.conf" ]
+     
+
+volumes:
+  db-data:
+    driver: local
+  redis-data:
+    driver: local

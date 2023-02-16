@@ -1,13 +1,12 @@
 from sqlalchemy.orm.session import Session
-from schemas.event_schema import EventBase
-from chat.src.inventory_api.models.chatroom_model import DbEvent
+from chat.src.schemas.chatroom_schema import EventBase
+from chat.src.models.chatroom_model import DbEvent
 
-def add_event(db: Session, plant_id: int, request: EventBase):
+def add_chatroom(db: Session, request: EventBase):
     new_event = DbEvent(
         title=request.title,
         description=request.description,
         is_public=request.is_public,
-        plant_id=plant_id
     )
     db.add(new_event)
     db.commit()
@@ -16,10 +15,10 @@ def add_event(db: Session, plant_id: int, request: EventBase):
     return new_event
 
 
-def get_event_by_id(db: Session, event_id: int):
+def get_chatroom_by_id(db: Session, event_id: int):
     return db.query(DbEvent).filter(DbEvent.id == event_id).first()
 
-def update_event(db: Session, event_id: int, request: DbEvent):
+def update_chatroom(db: Session, event_id: int, request: DbEvent):
     event = db.query(DbEvent).filter(DbEvent.id == event_id).first()
     if event:
         event.title = request.title
@@ -32,7 +31,7 @@ def update_event(db: Session, event_id: int, request: DbEvent):
 
     return event
 
-def delete_event(db: Session, event_id: int,):
+def delete_chatroom(db: Session, event_id: int,):
     event = db.query(DbEvent).filter(DbEvent.id == event_id).first()
     if event:
         db.delete(event)

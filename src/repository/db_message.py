@@ -1,5 +1,5 @@
 from sqlalchemy.orm.session import Session
-from schemas.plant_schema import PlantBase
+from chat.src.schemas.message_schema import PlantBase
 from chat.src.inventory_api.models.message_model import DbPlant
 
 def add_plant(db: Session, owner_id: int, request: PlantBase):
